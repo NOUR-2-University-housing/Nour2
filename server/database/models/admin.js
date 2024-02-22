@@ -24,4 +24,4 @@ const Admin = (connection, DataTypes) => {
     });
   };
   
-  module.exports = Admin;
+  export default Admin;

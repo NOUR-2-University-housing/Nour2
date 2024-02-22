@@ -29,4 +29,4 @@ const Rooms = (connection, DataTypes) => {
     });
   };
   
-  module.exports = Rooms;
+  export default Rooms;

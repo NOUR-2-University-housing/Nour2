@@ -37,4 +37,4 @@ const UsersBF = (connection, DataTypes) => {
     });
   };
   
-  module.exports = UsersBF;
+  export default UsersBF;
