@@ -31,4 +31,4 @@ const Houinfo = (connection, DataTypes) => {
     });
   };
   
-  export default Houinfo;
+  module.exports = Houinfo;

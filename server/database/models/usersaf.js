@@ -33,4 +33,4 @@ const UsersAF = (connection, DataTypes) => {
     });
   };
   
-  export default UsersAF;
+  module.exports = UsersAF;

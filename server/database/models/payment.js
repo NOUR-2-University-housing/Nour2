@@ -11,4 +11,4 @@ const Payment = (connection, DataTypes) => {
     });
   };
   
-  export default Payment;
+  module.exports = Payment;

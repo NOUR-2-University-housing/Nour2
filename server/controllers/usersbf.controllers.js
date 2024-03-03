@@ -2,7 +2,13 @@ const {UsersBf}=require("../database/index")
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const GiveMeToken=(userId,Name)=>{
+/**
+ * Generates a JWT token.
+ * @param {num} userId - The user ID.
+ * @param {string} Name - The user's name.
+ * @returns {string} - The generated token.
+ */
+const GiveMeToken  =(userId,Name)  =>{
    return jwt.sign({userId,Name},process.env.ACCESS_TOKEN_SECRET,{ expiresIn:60*60*24*7})
     
 }
@@ -24,10 +30,12 @@ const OneUsers= async(req,res) => {
     }
 };
 
+
+
 const LoginUser = async(req,res)=>{
     const {user_password,email}=req.body
     try {
-        const correctUserEmail=await UsersBf.findOne({where:{email:req.body.email}})
+        const correctUserEmail=await UsersBf.findOne({where:{email:email}})
         if(!correctUserEmail){
            return res.status(405).json("email not found")
         }
@@ -40,18 +48,24 @@ const LoginUser = async(req,res)=>{
             else {
                 const userId=correctUserEmail.dataValues.id
                 const Name=correctUserEmail.dataValues.lname
+                const token = GiveMeToken(userId,Name)
+                if(!token){
+                    throw new Error('Error generating token')
+                }
                 return res.json({
                     id:userId,
-                    token:GiveMeToken(userId,Name)
+                    token:token
                 })
             }
         }
     } catch (error) {
-        res.send(error)
+        res.status(500).send(error.message)
     }
 }
 
+
 const CreateUser =async (req, res) =>{
+    
     const {fname,lname,user_password,email,doc1,doc2,doc3,doc4,status}=req.body
     console.log("req",req.body);
       try {
