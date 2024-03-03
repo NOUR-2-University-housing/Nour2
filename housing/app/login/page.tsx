@@ -1,27 +1,35 @@
 "use client"
 
 import React, { useState } from 'react';
-
-
+import {log_in}  from  "@/lib/apiCalls"
 import { useAppSelector, useAppDispatch, useAppStore } from '@/lib/hooks';
-import { updateFloor ,updateUnit} from '@/lib/features/bookSlice';
+import { updateUserToken,updateUserId} from '@/lib/features/userSlice';
 
-export default function MyComponent() {
+export default function Login() {
 
     const store = useAppStore();
-    const floor= useAppSelector((state) => state.booking.floor);
-    const unit = useAppSelector((state)=> state.booking.unit)
+    const user= useAppSelector((state) => state.user.formData);
     const dispatch = useAppDispatch();
+    const [email,setEmail]=useState("")
+    const [password,setPassword]=useState("")
+
   
+    
+const handleLog = async  () => {
+    try { const h=await log_in(email,password)
+   dispatch(updateUserToken(h.token)) 
+   dispatch(updateUserId(h.id))}
+catch (err) {
+    return err
+}
 
-    dispatch(updateFloor(5))
-    dispatch(updateUnit("my man"))
 
+}
   
     return (<div>
-        <input type="text" placeholder='email' />
-        <input type="text" placeholder='password' />
-        <button>Login</button>
+        <input type="text" onChange={(e)=>setEmail(e.target.value)} placeholder='email' />
+        <input type="text"  onChange={(e)=>setPassword(e.target.value)} placeholder='password' />
+        <button onClick={handleLog} >Login {user.id}</button> 
     </div>)
   }
   
